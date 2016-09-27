@@ -10,7 +10,7 @@ import com.loopj.android.http.RequestParams;
  * Created by macbook on 2/27/16.
  */
 public class CommunicationAsyn {
-    private static final String BASE_URL = "";
+    private static final String BASE_URL = Constant.SERVER_URL;
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

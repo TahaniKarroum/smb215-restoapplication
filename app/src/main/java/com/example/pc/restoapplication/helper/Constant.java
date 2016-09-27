@@ -4,8 +4,7 @@ package com.example.pc.restoapplication.helper;
  * Created by macbook on 2/17/16.
  */
 public class Constant {
-    public static final String SERVER_URL = "http://192.168.1.66/qapp/index.php?r=api/";
-    //public static final String SERVER_URL = "http://192.168.0.103/qapp/index.php?r=api/";
+    public static final String SERVER_URL = "http://192.168.1.70:9004/api/";
     public static final int ACTION_SHOWPORGRESS = 0;
     public static final int ACTION_HIDEPROGRESS = 1;
     public static String CATEGORY_ID = "";
@@ -15,13 +14,12 @@ public class Constant {
     public static String OPERATION_ID = "";
     public static int TASKCOUNTER = 0;
     public static String PREFEREDTIME_ID = "";
-    public static int USER_ID =0;
+    public static int USER_ID = 0;
     public static String CATEGORYNAME = "";
     public static String BRANCHNAME = "";
     public static String TIME = "";
     public static String QUEUEID = "";
     public static String QUEUEDETAILSFRAGMENT = "";
-
 
 
     public static final String CATEGORYFRAGMENT = "categoryfragment";

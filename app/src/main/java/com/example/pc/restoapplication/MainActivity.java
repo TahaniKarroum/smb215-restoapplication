@@ -2,20 +2,30 @@ package com.example.pc.restoapplication;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.pc.restoapplication.Categories.Category;
 import com.example.pc.restoapplication.Categories.CategoryFragment;
+import com.example.pc.restoapplication.helper.CommunicationAsyn;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +39,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        try {
+            prepareCategories();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -85,4 +100,35 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public  void prepareCategories() throws JSONException {
+
+        CommunicationAsyn.get("getAllCategories", null, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                try {
+                    JSONArray array = response.getJSONArray("items");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject c = array.getJSONObject(i);
+                        String subtitle = c.getString("name");
+                        String id = c.getString("ID");
+                        Category a = new Category(id, subtitle);
+                        Log.i("categoryyyy ", " " + a);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.i("failureeeee", " two");
+            }
+        });
+    }
+
 }

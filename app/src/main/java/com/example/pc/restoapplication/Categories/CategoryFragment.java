@@ -71,7 +71,7 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
     public void prepareCategories() throws JSONException {
 
         nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
-        CommunicationAsyn.get("grabcat", null, new JsonHttpResponseHandler() {
+        CommunicationAsyn.get("getAllCategories", null, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
