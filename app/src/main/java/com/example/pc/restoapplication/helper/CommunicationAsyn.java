@@ -19,6 +19,11 @@ public class CommunicationAsyn {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
+    public static void getWithoutParams(String url, AsyncHttpResponseHandler responseHandler) {
+        Log.i("ppppp", " " + getAbsoluteUrl(url));
+        client.get(getAbsoluteUrl(url), responseHandler);
+    }
+
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }

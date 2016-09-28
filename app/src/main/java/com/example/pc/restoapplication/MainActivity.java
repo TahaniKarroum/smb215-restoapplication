@@ -17,7 +17,9 @@ import android.view.MenuItem;
 import com.example.pc.restoapplication.Categories.Category;
 import com.example.pc.restoapplication.Categories.CategoryFragment;
 import com.example.pc.restoapplication.helper.CommunicationAsyn;
+import com.example.pc.restoapplication.helper.Constant;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         try {
-            prepareCategories();
+            //prepareCategories();
+            prepareProducts();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -101,27 +104,52 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public  void prepareCategories() throws JSONException {
+    public void prepareCategories() throws JSONException {
 
-        CommunicationAsyn.get("getAllCategories", null, new JsonHttpResponseHandler() {
+        CommunicationAsyn.getWithoutParams("getAllCategories", new JsonHttpResponseHandler() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 try {
-                    JSONArray array = response.getJSONArray("items");
-                    for (int i = 0; i < array.length(); i++) {
-                        JSONObject c = array.getJSONObject(i);
+                    Log.i("categoryyyy ", " " + response.get(0));
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject c = response.getJSONObject(i);
                         String subtitle = c.getString("name");
                         String id = c.getString("ID");
                         Category a = new Category(id, subtitle);
-                        Log.i("categoryyyy ", " " + a);
+                        Log.i("nnnnnnnn ", "" + c);
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.i("failureeeee", " two");
+            }
+        });
+    }
+
+    public void prepareProducts() throws JSONException {
+        RequestParams params = new RequestParams();
+        Constant.CATEGORY_ID = "4e0a0cd3-0445-4e93-97f8-e56936f5279e";
+        params.put("categoryid", Constant.CATEGORY_ID);
+        CommunicationAsyn.get("getAllProducts", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                try {
+                    Log.i("categoryyyy ", " " + response.get(0));
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject c = response.getJSONObject(i);
+                        String subtitle = c.getString("name");
+                        String id = c.getString("ID");
+                        Category a = new Category(id, subtitle);
+                        Log.i("nnnnnnnn ", "" + c);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

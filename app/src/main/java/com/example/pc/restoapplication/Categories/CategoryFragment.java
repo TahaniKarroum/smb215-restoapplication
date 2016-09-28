@@ -35,6 +35,7 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
     private CategoriesListViewAdapter mAdapter;
     private ProgressDialog nDialog;
     MainActivity mainActivity;
+
     public static CategoryFragment newInstance() {
         CategoryFragment fragment = new CategoryFragment();
         return fragment;
@@ -70,35 +71,27 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
 
     public void prepareCategories() throws JSONException {
 
-        nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
-        CommunicationAsyn.get("getAllCategories", null, new JsonHttpResponseHandler() {
+        CommunicationAsyn.getWithoutParams("getAllCategories", new JsonHttpResponseHandler() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 try {
-                    JSONArray array = response.getJSONArray("items");
-                    for (int i = 0; i < array.length(); i++) {
-                        JSONObject c = array.getJSONObject(i);
-                        String subtitle = c.getString("subtitle");
-                        String id = c.getString("id");
-                        String image = c.getString("img");
-                        Category a = new Category(id, subtitle, image);
-                        categories.add(a);
+                    Log.i("categoryyyy ", " " + response.get(0));
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject c = response.getJSONObject(i);
+                        String subtitle = c.getString("name");
+                        String id = c.getString("ID");
+                        Category a = new Category(id, subtitle);
+                        Log.i("nnnnnnnn ", "" + c);
                     }
-                    list.setAdapter(mAdapter);
-                    mAdapter.setData(categories);
-                    nDialog.dismiss();
                 } catch (JSONException e) {
-                    nDialog.dismiss();
                     e.printStackTrace();
                 }
-
             }
+
             @Override
-            public void  onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.i("failureeeee", " two");
-                nDialog.dismiss();
             }
         });
     }
@@ -109,16 +102,18 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
         Constant.CATEGORYNAME = category.getName();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.addToBackStack("tag");
-       // transaction.replace(R.id.container, SubCategoryFragment.newInstance()).commit();
+        // transaction.replace(R.id.container, SubCategoryFragment.newInstance()).commit();
         getFragmentManager().executePendingTransactions();
         //((MainActivity) getActivity()).runFragment(Constant.SUBCATEGORYFRAGMENT);
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         //save the activity to a member of this fragment
         mainActivity = (MainActivity) activity;
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
