@@ -1,5 +1,6 @@
 package com.example.pc.restoapplication.Categories;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class CategoriesListViewAdapter extends BaseAdapter {
     public void setData(List<Category> categoryInfos) {
         this.mCategories.clear();
         this.mCategories.addAll(categoryInfos);
+        Log.i("setdata","  "+categoryInfos.size());
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -61,14 +63,14 @@ public class CategoriesListViewAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        convertView.setBackgroundResource(R.color.color);
+        convertView.setBackgroundResource(R.color.white);
 
         final Category categoryInfo = mCategories.get(position);
         holder.tvFName.setText(categoryInfo.getName() + " " );
         // holder.tvMName.setText(patientInfo.getMname());
         // holder.tvLName.setText(patientInfo.getLname());
         // holder.tvMotherName.setText(patientInfo.getMothername());
-
+        Log.i("setdata","  "+categoryInfo.getName());
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

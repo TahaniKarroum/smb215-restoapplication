@@ -70,7 +70,7 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
     }
 
     public void prepareCategories() throws JSONException {
-
+        nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
         CommunicationAsyn.getWithoutParams("getAllCategories", new JsonHttpResponseHandler() {
 
             @Override
@@ -82,9 +82,14 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
                         String subtitle = c.getString("name");
                         String id = c.getString("ID");
                         Category a = new Category(id, subtitle);
-                        Log.i("nnnnnnnn ", "" + c);
+                        categories.add(a);
                     }
+                    list.setAdapter(mAdapter);
+                    mAdapter.setData(categories);
+                    Log.i("setdata","  "+categories.size());
+                    nDialog.dismiss();
                 } catch (JSONException e) {
+                    nDialog.dismiss();
                     e.printStackTrace();
                 }
             }
@@ -92,6 +97,7 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.i("failureeeee", " two");
+                nDialog.dismiss();
             }
         });
     }
