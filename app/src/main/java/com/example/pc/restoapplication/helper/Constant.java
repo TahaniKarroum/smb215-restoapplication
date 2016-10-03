@@ -10,6 +10,7 @@ public class Constant {
     public static String CATEGORY_ID = "";
     public static String CATEGORYNAME = "";
     public static final String CATEGORYFRAGMENT = "categoryfragment";
+    public static final String PRODUCTFRAGMENT = "productfragment";
 }
 
 

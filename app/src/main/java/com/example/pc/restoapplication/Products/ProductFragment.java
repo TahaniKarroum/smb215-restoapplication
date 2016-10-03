@@ -1,10 +1,9 @@
-package com.example.pc.restoapplication.Categories;
+package com.example.pc.restoapplication.Products;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +12,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.pc.restoapplication.MainActivity;
-import com.example.pc.restoapplication.Products.ProductFragment;
 import com.example.pc.restoapplication.R;
 import com.example.pc.restoapplication.helper.CommunicationAsyn;
 import com.example.pc.restoapplication.helper.Constant;
 import com.example.pc.restoapplication.helper.OnItemClickListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,17 +27,17 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class CategoryFragment extends Fragment implements OnItemClickListener<Category> {
+public class ProductFragment extends Fragment implements OnItemClickListener<Product> {
 
     RelativeLayout ll;
     ListView list;
-    private ArrayList<Category> categories;
-    private CategoriesListViewAdapter mAdapter;
+    private ArrayList<Product> products;
+    private ProductsListViewAdapter mAdapter;
     private ProgressDialog nDialog;
     MainActivity mainActivity;
 
-    public static CategoryFragment newInstance() {
-        CategoryFragment fragment = new CategoryFragment();
+    public static ProductFragment newInstance() {
+        ProductFragment fragment = new ProductFragment();
         return fragment;
     }
 
@@ -46,7 +45,7 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new CategoriesListViewAdapter();
+        mAdapter = new ProductsListViewAdapter();
         mAdapter.setOnItemClickListener(this);
     }
 
@@ -55,9 +54,9 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         list = (ListView) view.findViewById(R.id.list);
         Log.i("iii", "onCreateView: ");
-        categories = new ArrayList<Category>();
+        products = new ArrayList<Product>();
         try {
-            prepareCategories();
+            prepareProducts();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -70,24 +69,25 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
         super.onActivityCreated(savedInstanceState);
     }
 
-    public void prepareCategories() throws JSONException {
+    public void prepareProducts() throws JSONException {
+        RequestParams params = new RequestParams();
         nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
-        CommunicationAsyn.getWithoutParams("getAllCategories", new JsonHttpResponseHandler() {
-
+        params.put("categoryid", Constant.CATEGORY_ID);
+        CommunicationAsyn.get("getAllProducts", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 try {
-                    Log.i("categoryyyy ", " " + response.get(0));
+                    Log.i("productttt ", " " + response.get(0));
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject c = response.getJSONObject(i);
                         String subtitle = c.getString("name");
                         String id = c.getString("ID");
-                        Category a = new Category(id, subtitle);
-                        categories.add(a);
+                        Product a = new Product(id, subtitle);
+                        products.add(a);
                     }
                     list.setAdapter(mAdapter);
-                    mAdapter.setData(categories);
-                    Log.i("setdata", "  " + categories.size());
+                    mAdapter.setData(products);
+                    Log.i("setdata", "  " + products.size());
                     nDialog.dismiss();
                 } catch (JSONException e) {
                     nDialog.dismiss();
@@ -104,15 +104,14 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
     }
 
     @Override
-    public void onItemClick(View v, final int position, final Category category) {
-        Constant.CATEGORY_ID = category.getId();
+    public void onItemClick(View v, final int position, final Product category) {
+        /*Constant.CATEGORY_ID = category.getId();
         Constant.CATEGORYNAME = category.getName();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.addToBackStack("tag");
-        transaction.replace(R.id.container, ProductFragment.newInstance()).commit();
+        transaction.replace(R.id.container, SubCategoryFragment.newInstance()).commit();
         getFragmentManager().executePendingTransactions();
-        Log.i("dhdhhdhdchdhd", "clickkkkkkk");
-        ((MainActivity) getActivity()).runFragment(Constant.PRODUCTFRAGMENT);
+        ((MainActivity) getActivity()).runFragment(Constant.SUBCATEGORYFRAGMENT);*/
     }
 
     @Override
