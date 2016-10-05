@@ -2,7 +2,9 @@ package com.example.pc.restoapplication;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -22,6 +24,7 @@ import com.example.pc.restoapplication.Categories.CategoryFragment;
 import com.example.pc.restoapplication.helper.CommunicationAsyn;
 import com.example.pc.restoapplication.helper.Constant;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FrameLayout frameLayout;
     private FragmentStateArrayPagerAdapter mFragmentAdapter;
     private TabLayout tabLayout;
+    String android_id;
+    private ProgressDialog nDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         frameLayout = (FrameLayout) findViewById(R.id.container);
         setupViewPager(viewPager);
+        getDeviceid();
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setOnTabSelectedListener(
@@ -66,6 +72,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fillAdapters();
     }
 
+    public void getDeviceid() {
+        android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        RequestParams params = new RequestParams();
+        params.put("deviceid", android_id);
+        CommunicationAsyn.get("ping", params, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                        try {
+                            Log.i("ping ", " " + response.get(0));
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject c = response.getJSONObject(i);
+                                String clientid = c.getString("ID");
+                                String name = c.getString("name");
+                                Constant.CLIENTID = clientid;
+                                Constant.CLIENTNAME = name;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable
+                            throwable, JSONObject errorResponse) {
+                        Log.i("failureeeee", " two");
+
+                    }
+                }
+
+        );
+    }
    /* @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
