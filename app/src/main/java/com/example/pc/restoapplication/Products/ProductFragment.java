@@ -16,6 +16,7 @@ import com.example.pc.restoapplication.R;
 import com.example.pc.restoapplication.helper.CommunicationAsyn;
 import com.example.pc.restoapplication.helper.Constant;
 import com.example.pc.restoapplication.helper.OnItemClickListener;
+import com.example.pc.restoapplication.helper.OnLongClickListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class ProductFragment extends Fragment implements OnItemClickListener<Product> {
+public class ProductFragment extends Fragment implements OnItemClickListener<Product>, OnLongClickListener<Product> {
 
     RelativeLayout ll;
     ListView list;
@@ -47,6 +48,8 @@ public class ProductFragment extends Fragment implements OnItemClickListener<Pro
         super.onCreate(savedInstanceState);
         mAdapter = new ProductsListViewAdapter();
         mAdapter.setOnItemClickListener(this);
+        mAdapter.setOnLongClickListener(this);
+
     }
 
     @Override
@@ -82,7 +85,8 @@ public class ProductFragment extends Fragment implements OnItemClickListener<Pro
                         JSONObject c = response.getJSONObject(i);
                         String subtitle = c.getString("name");
                         String id = c.getString("ID");
-                        Product a = new Product(id, subtitle);
+                        String image = Constant.IP+"public/template/images/" + c.getString("imagePath");
+                        Product a = new Product(id, subtitle, image);
                         products.add(a);
                     }
                     list.setAdapter(mAdapter);
@@ -127,5 +131,10 @@ public class ProductFragment extends Fragment implements OnItemClickListener<Pro
         if (isVisibleToUser) {
 
         }
+    }
+
+    @Override
+    public void onLongClick(View v, int position, Product product) {
+        Log.i("Product fragment", " dhdhe" + product.getName());
     }
 }

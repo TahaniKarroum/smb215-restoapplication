@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.example.pc.restoapplication.R;
 import com.example.pc.restoapplication.helper.OnItemClickListener;
+import com.example.pc.restoapplication.helper.OnLongClickListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ public class ProductsListViewAdapter extends BaseAdapter {
     private List<Product> products;
 
     private OnItemClickListener mListener;
+    private OnLongClickListener mLongListener;
 
     public ProductsListViewAdapter() {
         this.products = new ArrayList<Product>();
@@ -31,11 +34,15 @@ public class ProductsListViewAdapter extends BaseAdapter {
     public void setData(List<Product> profuctInfos) {
         this.products.clear();
         this.products.addAll(profuctInfos);
-        Log.i("setdata","  "+profuctInfos.size());
+        Log.i("setdata", "  " + profuctInfos.size());
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mListener = listener;
+    }
+
+    public void setOnLongClickListener(OnLongClickListener longlistener) {
+        this.mLongListener = longlistener;
     }
 
     @Override
@@ -65,27 +72,36 @@ public class ProductsListViewAdapter extends BaseAdapter {
         }
         convertView.setBackgroundResource(R.color.white);
 
-        final Product categoryInfo = products.get(position);
-        holder.tvFName.setText(categoryInfo.getName() + " " );
+        final Product productInfo = products.get(position);
+        holder.tvFName.setText(productInfo.getName() + " ");
         // holder.tvMName.setText(patientInfo.getMname());
         // holder.tvLName.setText(patientInfo.getLname());
         // holder.tvMotherName.setText(patientInfo.getMothername());
-        Log.i("setdata","  "+categoryInfo.getName());
+        Log.i("setdata", "  " + productInfo.getName());
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onItemClick(v, position, categoryInfo);
+                    mListener.onItemClick(v, position, productInfo);
                 }
             }
         });
+  convertView.setOnLongClickListener(new View.OnLongClickListener(){
+      @Override
+      public boolean onLongClick(View view) {
+          if (mLongListener != null) {
+              mLongListener.onLongClick(view, position, productInfo);
+          }
+          return true;
+      }
+  });
 
-        /*if (categoryInfo.getThumbnail() != null && categoryInfo.getThumbnail().toString().length() > 1) {
-            Picasso.with(parent.getContext()).load(categoryInfo.getThumbnail()).error(R.drawable.banks).placeholder(R.drawable.banks).into(holder.ivIcon);
+        if (productInfo.getThumbnail() != null && productInfo.getThumbnail().toString().length() > 1) {
+            Picasso.with(parent.getContext()).load(productInfo.getThumbnail()).error(R.drawable.cat2).placeholder(R.drawable.cat2).into(holder.ivIcon);
         } else {
-            holder.ivIcon.setImageResource(R.drawable.banks);
+            holder.ivIcon.setImageResource(R.drawable.cat2);
 
-        }*/
+        }
 
 
         return convertView;

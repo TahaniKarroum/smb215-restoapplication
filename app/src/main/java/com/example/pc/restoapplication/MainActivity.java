@@ -19,8 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.example.pc.restoapplication.Categories.Category;
 import com.example.pc.restoapplication.Categories.CategoryFragment;
+import com.example.pc.restoapplication.Products.ProductFragment;
 import com.example.pc.restoapplication.helper.CommunicationAsyn;
 import com.example.pc.restoapplication.helper.Constant;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initializeFragmentSwitcher();
         fillAdapters();
+       this.runFragment(Constant.CATEGORYFRAGMENT);
     }
 
     public void getDeviceid() {
@@ -103,15 +104,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         );
     }
-   /* @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -171,6 +163,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         fragments.add(CategoryFragment.newInstance());
         fragmentPosition.put(Constant.CATEGORYFRAGMENT, position++);
+        fragments.add(ProductFragment.newInstance());
+        fragmentPosition.put(Constant.PRODUCTFRAGMENT, position++);
         mFragmentAdapter.addAll(fragments);
 
     }
@@ -185,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (fragmentPosition != null && fragmentPosition.size() == 0) {
             mFragmentSwitcher.setVisibility(View.GONE);
         } else {
-            if (key.equals("queuefragment")) {
+            if (key.equals("categoryfragment")) {
                 viewPager.setCurrentItem(1);
                 viewPager.setVisibility(View.VISIBLE);
                 frameLayout.setVisibility(View.GONE);
@@ -204,12 +198,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             int index = fm.getBackStackEntryCount();
             Fragment fragment = fm.getFragments().get(index);
-            if (fragment instanceof CategoryFragment) {
+            if (fragment instanceof CategoryFragment || fragment instanceof ProductFragment) {
                 viewPager.setVisibility(View.VISIBLE);
                 frameLayout.setVisibility(View.GONE);
-            } else {
-                viewPager.setVisibility(View.GONE);
-                frameLayout.setVisibility(View.VISIBLE);
             }
 
             fm.popBackStack();
@@ -253,32 +244,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public void prepareCategories() throws JSONException {
-
-        CommunicationAsyn.getWithoutParams("getAllCategories", new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                try {
-                    Log.i("categoryyyy ", " " + response.get(0));
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject c = response.getJSONObject(i);
-                        String subtitle = c.getString("name");
-                        String id = c.getString("ID");
-                        Category a = new Category(id, subtitle);
-                        Log.i("nnnnnnnn ", "" + c);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.i("failureeeee", " two");
-            }
-        });
     }
 }
