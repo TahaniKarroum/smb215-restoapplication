@@ -28,6 +28,8 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
+
+
 public class CategoryFragment extends Fragment implements OnItemClickListener<Category> {
 
     RelativeLayout ll;
@@ -36,7 +38,6 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
     private CategoriesListViewAdapter mAdapter;
     private ProgressDialog nDialog;
     MainActivity mainActivity;
-
     public static CategoryFragment newInstance() {
         CategoryFragment fragment = new CategoryFragment();
         return fragment;
@@ -54,6 +55,7 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         list = (ListView) view.findViewById(R.id.list);
+        Constant.CATEGORY_ID = "";
         Log.i("iii", "onCreateView: ");
         categories = new ArrayList<Category>();
         try {
@@ -69,7 +71,6 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-
     public void prepareCategories() throws JSONException {
         nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
         CommunicationAsyn.getWithoutParams("getAllCategories", new JsonHttpResponseHandler() {
@@ -114,14 +115,12 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
         Log.i("dhdhhdhdchdhd", "clickkkkkkk");
         ((MainActivity) getActivity()).runFragment(Constant.PRODUCTFRAGMENT);
     }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         //save the activity to a member of this fragment
         mainActivity = (MainActivity) activity;
     }
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

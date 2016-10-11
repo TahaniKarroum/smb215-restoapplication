@@ -86,7 +86,8 @@ public class ProductFragment extends Fragment implements OnItemClickListener<Pro
                         String subtitle = c.getString("name");
                         String id = c.getString("ID");
                         String image = Constant.IP+"public/template/images/" + c.getString("imagePath");
-                        Product a = new Product(id, subtitle, image);
+                        double price= (double) c.get("price");
+                        Product a = new Product(id, subtitle, image,price);
                         products.add(a);
                     }
                     list.setAdapter(mAdapter);

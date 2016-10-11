@@ -7,8 +7,24 @@ public class Product {
     private String id;
     private String name;
     private String thumbnail;
+    private double price;
 
     public Product() {
+    }
+
+    public Product(String id, String name, String thumbnail, double price) {
+        this.id = id;
+        this.name = name;
+        this.thumbnail = thumbnail;
+        this.price = price;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public Product(String id, String name) {
