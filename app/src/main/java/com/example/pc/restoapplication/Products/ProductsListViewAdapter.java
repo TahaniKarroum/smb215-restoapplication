@@ -64,7 +64,7 @@ public class ProductsListViewAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, final ViewGroup parent) {
         final ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.category, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.product, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -74,6 +74,7 @@ public class ProductsListViewAdapter extends BaseAdapter {
 
         final Product productInfo = products.get(position);
         holder.tvFName.setText(productInfo.getName() + " ");
+        holder.price.setText(productInfo.getPrice() + " $");
         // holder.tvMName.setText(patientInfo.getMname());
         // holder.tvLName.setText(patientInfo.getLname());
         // holder.tvMotherName.setText(patientInfo.getMothername());
@@ -114,6 +115,10 @@ public class ProductsListViewAdapter extends BaseAdapter {
 
         @Bind(R.id.tvFName)
         public TextView tvFName;
+
+
+        @Bind(R.id.price)
+        public TextView price;
 
 
 

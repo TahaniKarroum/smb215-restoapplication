@@ -7,23 +7,23 @@ public class Product {
     private String id;
     private String name;
     private String thumbnail;
-    private double price;
+    private String price;
 
     public Product() {
     }
 
-    public Product(String id, String name, String thumbnail, double price) {
+    public Product(String id, String name, String thumbnail, String price) {
         this.id = id;
         this.name = name;
         this.thumbnail = thumbnail;
         this.price = price;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
