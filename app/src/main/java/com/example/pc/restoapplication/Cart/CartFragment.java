@@ -1,4 +1,4 @@
-package com.example.pc.restoapplication.Products;
+package com.example.pc.restoapplication.Cart;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,6 +23,7 @@ import com.example.pc.restoapplication.helper.Constant;
 import com.example.pc.restoapplication.helper.OnItemClickListener;
 import com.example.pc.restoapplication.helper.OnLongClickListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,18 +33,18 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class ProductFragment extends Fragment implements OnItemClickListener<Product>, OnLongClickListener<Product> {
+public class CartFragment extends Fragment implements OnItemClickListener<Order_Product>, OnLongClickListener<Order_Product> {
 
     RelativeLayout ll;
     ListView list;
-    private ArrayList<Product> products;
-    private ProductsListViewAdapter mAdapter;
+    private ArrayList<Order_Product> order_products;
+    private CartListViewAdapter mAdapter;
     private ProgressDialog nDialog;
     MainActivity mainActivity;
     Context context;
 
-    public static ProductFragment newInstance() {
-        ProductFragment fragment = new ProductFragment();
+    public static CartFragment newInstance() {
+        CartFragment fragment = new CartFragment();
         return fragment;
     }
 
@@ -52,7 +53,7 @@ public class ProductFragment extends Fragment implements OnItemClickListener<Pro
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getContext();
-        mAdapter = new ProductsListViewAdapter();
+        mAdapter = new CartListViewAdapter();
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnLongClickListener(this);
 
@@ -60,12 +61,12 @@ public class ProductFragment extends Fragment implements OnItemClickListener<Pro
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_category, container, false);
+        View view = inflater.inflate(R.layout.fragment_cart, container, false);
         list = (ListView) view.findViewById(R.id.list);
         Log.i("iii", "onCreateView: ");
-        products = new ArrayList<Product>();
+        order_products = new ArrayList<Order_Product>();
         try {
-            prepareProducts();
+            prepareCart();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -78,44 +79,55 @@ public class ProductFragment extends Fragment implements OnItemClickListener<Pro
         super.onActivityCreated(savedInstanceState);
     }
 
-    public void prepareProducts() throws JSONException {
-        nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
-        String functionName = "getAllProducts?categoryid=" + Constant.CATEGORY_ID;
-        CommunicationAsyn.getWithoutParams(functionName, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                try {
-                    Log.i("productttt ", " " + response.get(0));
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject c = response.getJSONObject(i);
-                        String subtitle = c.getString("name");
-                        String id = c.getString("ID");
-                        String image = Constant.IP + "public/template/images/" + c.getString("imagePath");
-                        String price = c.getString("price");
-                        Product a = new Product(id, subtitle, image, price);
-                        products.add(a);
+    public void prepareCart() throws JSONException {
+        String orderid = Constant.ORDERID;
+        if (orderid.length() > 0) {
+            nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
+            String functionname = "getlistItemsByOrder?orderid=" + Constant.ORDERID;
+            CommunicationAsyn.getWithoutParams(functionname, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    try {
+                        Log.i("productttt ", " " + response.get(0));
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject c = response.getJSONObject(i);
+                            String subtitle = c.getString("productname");
+                            String productid = c.getString("product_ID");
+                            String id = c.getString("ID");
+                            int qty = c.getInt("quantity");
+                            String image = Constant.IP + "public/template/images/" + c.getString("image");
+                            String price = c.getString("unitPrice");
+                            Order_Product a = new Order_Product(id,productid, subtitle, image, price,qty);
+                            order_products.add(a);
+                        }
+                        list.setAdapter(mAdapter);
+                        mAdapter.setData(order_products);
+                        Log.i("setdata", "  " + order_products.size());
+                        nDialog.dismiss();
+                    } catch (JSONException e) {
+                        nDialog.dismiss();
+                        e.printStackTrace();
                     }
-                    list.setAdapter(mAdapter);
-                    mAdapter.setData(products);
-                    Log.i("setdata", "  " + products.size());
-                    nDialog.dismiss();
-                } catch (JSONException e) {
-                    nDialog.dismiss();
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.i("failureeeee", " two");
-                nDialog.dismiss();
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.i("failureeeee", " two");
+                    nDialog.dismiss();
+                }
+            });
+        }
     }
 
     @Override
-    public void onItemClick(View v, final int position, final Product category) {
-
+    public void onItemClick(View v, final int position, final Order_Product category) {
+        /*Constant.CATEGORY_ID = category.getId();
+        Constant.CATEGORYNAME = category.getName();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.addToBackStack("tag");
+        transaction.replace(R.id.container, SubCategoryFragment.newInstance()).commit();
+        getFragmentManager().executePendingTransactions();
+        ((MainActivity) getActivity()).runFragment(Constant.SUBCATEGORYFRAGMENT);*/
     }
 
     @Override
@@ -134,8 +146,8 @@ public class ProductFragment extends Fragment implements OnItemClickListener<Pro
     }
 
     @Override
-    public void onLongClick(View v, int position, final Product product) {
-        Log.i("Product fragment", " dhdhe" + product.getName());
+    public void onLongClick(View v, int position, final Order_Product order_product) {
+        Log.i("Product fragment", " dhdhe" + order_product.getName());
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         final EditText et = new EditText(context);
         LayoutInflater inflater = mainActivity.getLayoutInflater();
@@ -160,7 +172,7 @@ public class ProductFragment extends Fragment implements OnItemClickListener<Pro
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String qty = qtyedittext.getText().toString();
-                addOrder(product.getId(), Integer.parseInt(qty));
+                addOrder(order_product.getId(), Integer.parseInt(qty));
                 Toast.makeText(context, "Quantity: " + qty, Toast.LENGTH_SHORT).show();
             }
         });
@@ -169,7 +181,12 @@ public class ProductFragment extends Fragment implements OnItemClickListener<Pro
     }
 
     public void addOrder(String productid, int qty) {
+        RequestParams params = new RequestParams();
         nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
+        params.put("deviceid", Constant.CLIENTID);
+        params.put("productid", productid);
+        params.put("qty", qty);
+        params.put("orderid", Constant.ORDERID);
         String functionName = "addtocart?deviceid=" + mainActivity.android_id + "&productid=" + productid + "&orderid=" + Constant.ORDERID + "&qty=" + qty;
         CommunicationAsyn.getWithoutParams(functionName, new JsonHttpResponseHandler() {
             @Override

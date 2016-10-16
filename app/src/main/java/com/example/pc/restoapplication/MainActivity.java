@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.example.pc.restoapplication.Cart.CartFragment;
 import com.example.pc.restoapplication.Categories.CategoryFragment;
 import com.example.pc.restoapplication.helper.Constant;
 
@@ -94,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
     public void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new CategoryFragment(), "Menu");
-        adapter.addFrag(new CategoryFragment(), "Cart");
         adapter.addFrag(new CategoryFragment(), "Settings");
+        adapter.addFrag(new CartFragment(), "Cart");
         viewPager.setAdapter(adapter);
     }
 
