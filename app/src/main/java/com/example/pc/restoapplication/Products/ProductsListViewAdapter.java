@@ -103,8 +103,6 @@ public class ProductsListViewAdapter extends BaseAdapter {
             holder.ivIcon.setImageResource(R.drawable.cat2);
 
         }
-
-
         return convertView;
     }
 

@@ -13,20 +13,12 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.example.pc.restoapplication.Categories.CategoryFragment;
-import com.example.pc.restoapplication.helper.CommunicationAsyn;
 import com.example.pc.restoapplication.helper.Constant;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
 import me.tabak.fragmentswitcher.FragmentStateArrayPagerAdapter;
 import me.tabak.fragmentswitcher.FragmentSwitcher;
 
@@ -36,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout frameLayout;
     private FragmentStateArrayPagerAdapter mFragmentAdapter;
     private TabLayout tabLayout;
-    String android_id;
+    public String android_id;
     private ProgressDialog nDialog;
 
     @Override
@@ -64,22 +56,27 @@ public class MainActivity extends AppCompatActivity {
     }
     public void getDeviceid() {
         android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        RequestParams params = new RequestParams();
+       /* RequestParams params = new RequestParams();
         params.put("deviceid", android_id);
-        CommunicationAsyn.get("ping", params, new JsonHttpResponseHandler() {
+        String functionName="ping?deviceid="+android_id;
+        nDialog = ProgressDialog.show(this, "Loading...", "Please wait...", true);
+        CommunicationAsyn.getWithoutParams(functionName, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                         try {
-                            Log.i("ping ", " " + response.get(0));
+                            Log.i("ping ", " " + response);
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject c = response.getJSONObject(i);
                                 String clientid = c.getString("ID");
                                 String name = c.getString("name");
                                 Constant.CLIENTID = clientid;
+                                Log.i("deviceid"," "+clientid);
                                 Constant.CLIENTNAME = name;
                             }
+                            nDialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            nDialog.dismiss();
                         }
                     }
 
@@ -87,11 +84,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(int statusCode, Header[] headers, Throwable
                             throwable, JSONObject errorResponse) {
                         Log.i("failureeeee", " two");
+                        nDialog.dismiss();
 
                     }
                 }
 
-        );
+        );*/
     }
     public void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
