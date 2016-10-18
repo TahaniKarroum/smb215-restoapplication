@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,7 +98,7 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
                             int qty = c.getInt("quantity");
                             String image = Constant.IP + "public/template/images/" + c.getString("image");
                             String price = c.getString("unitPrice");
-                            Order_Product a = new Order_Product(id,productid, subtitle, image, price,qty);
+                            Order_Product a = new Order_Product(id, productid, subtitle, image, price, qty);
                             order_products.add(a);
                         }
                         list.setAdapter(mAdapter);
@@ -145,6 +146,14 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
         }
     }
 
+    public void refresh() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.addToBackStack("tag");
+        transaction.replace(R.id.container, CartFragment.newInstance()).commit();
+        getFragmentManager().executePendingTransactions();
+        ((MainActivity) getActivity()).runFragment(Constant.CARTFRAGMENT);
+    }
+
     @Override
     public void onLongClick(View v, int position, final Order_Product order_product) {
         Log.i("Product fragment", " dhdhe" + order_product.getName());
@@ -153,7 +162,7 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
         LayoutInflater inflater = mainActivity.getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.layout_custom_dialog, null);
         final EditText qtyedittext = (EditText) alertLayout.findViewById(R.id.qty);
-
+        qtyedittext.setText(order_product.getQty() + "");
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
         alert.setTitle("Set Quantity");
         // this is set the view from XML inside AlertDialog
@@ -172,7 +181,9 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String qty = qtyedittext.getText().toString();
-                addOrder(order_product.getId(), Integer.parseInt(qty));
+                Toast.makeText(context, "Quantity: " + qty, Toast.LENGTH_SHORT).show();
+                addOrder(order_product.getProduct_ID(), Integer.parseInt(qty));
+
                 Toast.makeText(context, "Quantity: " + qty, Toast.LENGTH_SHORT).show();
             }
         });
@@ -199,6 +210,7 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
                         Constant.ORDERID = order_ID;
                     }
                     nDialog.dismiss();
+                    refresh();
                 } catch (JSONException e) {
                     nDialog.dismiss();
                     e.printStackTrace();

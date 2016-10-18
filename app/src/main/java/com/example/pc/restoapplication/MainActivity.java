@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void getDeviceid() {
         android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        Constant.DEVICEID=android_id;
        /* RequestParams params = new RequestParams();
         params.put("deviceid", android_id);
         String functionName="ping?deviceid="+android_id;
@@ -145,6 +146,10 @@ public class MainActivity extends AppCompatActivity {
 
         fragments.add(CategoryFragment.newInstance());
         fragmentPosition.put(Constant.CATEGORYFRAGMENT, position++);
+
+
+        fragments.add(CartFragment.newInstance());
+        fragmentPosition.put(Constant.CARTFRAGMENT, position++);
 
         mFragmentAdapter.addAll(fragments);
 
