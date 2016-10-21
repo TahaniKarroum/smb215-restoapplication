@@ -4,8 +4,8 @@ package com.example.pc.restoapplication.helper;
  * Created by macbook on 2/17/16.
  */
 public class Constant {
-    public static final String SERVER_URL = "http://192.168.1.68:9004/api/";
-    public static final String IP = "http://192.168.1.68:9004/";
+    public static final String SERVER_URL = "http://192.168.1.64:9004/api/";
+    public static final String IP = "http://192.168.1.64:9004/";
     public static final int ACTION_SHOWPORGRESS = 0;
     public static final int ACTION_HIDEPROGRESS = 1;
     public static final String CATEGORYFRAGMENT = "categoryfragment";

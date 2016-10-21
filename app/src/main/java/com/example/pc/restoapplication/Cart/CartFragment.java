@@ -273,7 +273,7 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
         address=address.trim();
         Log.i("fffff","ffff "+name+" "+phone+" "+address);
         nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
-        String functionName = "fillClientInformation?deviceid=" + mainActivity.android_id +"&name=" + name + "&address=" + address + "&phone=" + phone;
+        String functionName = "fillClientInformation?deviceid="+ mainActivity.android_id +"&name=" + name.toString() + "&address=" + address + "&phone=" + phone;
         CommunicationAsyn.getWithoutParams(functionName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
