@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pc.restoapplication.MainActivity;
@@ -44,6 +45,8 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
     private ProgressDialog nDialog;
     MainActivity mainActivity;
     Context context;
+    double total;
+    TextView totalTextView;
 
     public static CartFragment newInstance() {
         CartFragment fragment = new CartFragment();
@@ -65,6 +68,9 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         list = (ListView) view.findViewById(R.id.list);
         confirm = (Button) view.findViewById(R.id.confirm);
+        totalTextView = (TextView) view.findViewById(R.id.textView);
+        if(total==0)
+            totalTextView.setVisibility(View.GONE);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,6 +132,7 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
 
     public void prepareCart() throws JSONException {
         String orderid = Constant.ORDERID;
+        total=0;
         if (orderid.length() > 0) {
             nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
             String functionname = "getlistItemsByOrder?orderid=" + Constant.ORDERID;
@@ -143,12 +150,18 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
                             String image = Constant.IP + "public/template/images/" + c.getString("image");
                             String price = c.getString("unitPrice");
                             Order_Product a = new Order_Product(id, productid, subtitle, image, price, qty);
+                            total += qty * Double.parseDouble(price);
                             order_products.add(a);
                         }
-                        if (order_products.size() > 0)
+                        if (order_products.size() > 0) {
                             confirm.setVisibility(View.VISIBLE);
-                        else
+                            totalTextView.setVisibility(View.VISIBLE);
+                            totalTextView.setText("Total : "+total+" $");
+                        }
+                        else {
                             confirm.setVisibility(View.GONE);
+                            totalTextView.setVisibility(View.GONE);
+                        }
                         list.setAdapter(mAdapter);
                         mAdapter.setData(order_products);
                         Log.i("setdata", "  " + order_products.size());
@@ -273,7 +286,7 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
         Log.i("fffff", "ffff " + name + " " + phone + " " + address);
         nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
         String functionName = "fillClientInformation?deviceid=" + mainActivity.android_id + "&name=" + n + "&address=" + a + "&phone=" + p;
-        CommunicationAsyn.getWithoutParams("fillClientInformation?deviceid=" + mainActivity.android_id + "&name=" + n + "&address=" + a + "&phone=" + p, new JsonHttpResponseHandler() {
+        CommunicationAsyn.getWithoutParams("fillClientInformation?deviceid=" + mainActivity.android_id + "&name=" + n + "&address=" + a + "&phone=" + p + "&orderid=" + Constant.ORDERID, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 nDialog.dismiss();
