@@ -25,7 +25,6 @@ import com.example.pc.restoapplication.helper.Constant;
 import com.example.pc.restoapplication.helper.OnItemClickListener;
 import com.example.pc.restoapplication.helper.OnLongClickListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,12 +93,13 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
                         String namestr = nameedittext.getText().toString();
                         String phonestr = phoneedittext.getText().toString();
                         String addressstr = addressedittext.getText().toString();
-                        if(namestr.length()==0 || phonestr.length()==0|| addressstr.length()==0){
+                        if (namestr.length() == 0 || phonestr.length() == 0 || addressstr.length() == 0) {
                             Toast.makeText(context, "You should enter name , address and phone !", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
                             //Toast.makeText(context, "Name: " + namestr, Toast.LENGTH_SHORT).show();
-                            fillClientInformation(namestr, phonestr, addressstr);
+                            fillClientInformation(namestr + "", phonestr + "", addressstr + "");
+                            Constant.ORDERID = "";
+                            refresh();
                             //Toast.makeText(context, "Phone: " + phonestr, Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -145,6 +145,10 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
                             Order_Product a = new Order_Product(id, productid, subtitle, image, price, qty);
                             order_products.add(a);
                         }
+                        if (order_products.size() > 0)
+                            confirm.setVisibility(View.VISIBLE);
+                        else
+                            confirm.setVisibility(View.GONE);
                         list.setAdapter(mAdapter);
                         mAdapter.setData(order_products);
                         Log.i("setdata", "  " + order_products.size());
@@ -234,12 +238,7 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
     }
 
     public void addOrder(String productid, int qty) {
-        RequestParams params = new RequestParams();
         nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
-        params.put("deviceid", Constant.CLIENTID);
-        params.put("productid", productid);
-        params.put("qty", qty);
-        params.put("orderid", Constant.ORDERID);
         String functionName = "addtocart?deviceid=" + mainActivity.android_id + "&productid=" + productid + "&orderid=" + Constant.ORDERID + "&qty=" + qty;
         CommunicationAsyn.getWithoutParams(functionName, new JsonHttpResponseHandler() {
             @Override
@@ -268,13 +267,13 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
     }
 
     public void fillClientInformation(String name, String phone, String address) {
-        name=name.trim();
-        phone=phone.trim();
-        address=address.trim();
-        Log.i("fffff","ffff "+name+" "+phone+" "+address);
+        String n = name.replace(" ", "%20");
+        String p = phone.replace(" ", "%20");
+        String a = address.replace(" ", "%20");
+        Log.i("fffff", "ffff " + name + " " + phone + " " + address);
         nDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
-        String functionName = "fillClientInformation?deviceid="+ mainActivity.android_id +"&name=" + name.toString() + "&address=" + address + "&phone=" + phone;
-        CommunicationAsyn.getWithoutParams(functionName, new JsonHttpResponseHandler() {
+        String functionName = "fillClientInformation?deviceid=" + mainActivity.android_id + "&name=" + n + "&address=" + a + "&phone=" + p;
+        CommunicationAsyn.getWithoutParams("fillClientInformation?deviceid=" + mainActivity.android_id + "&name=" + n + "&address=" + a + "&phone=" + p, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 nDialog.dismiss();
