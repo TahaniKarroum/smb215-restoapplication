@@ -210,9 +210,9 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
     public void refresh() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.addToBackStack("tag");
-        transaction.replace(R.id.container, CartFragment.newInstance()).commit();
+        getFragmentManager().beginTransaction().replace(R.id.container, CartFragment.newInstance()).commit();
         getFragmentManager().executePendingTransactions();
-        ((MainActivity) getActivity()).runFragment(Constant.CARTFRAGMENT);
+        return;
     }
 
     @Override

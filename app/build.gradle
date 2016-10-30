@@ -22,12 +22,10 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
     compile 'com.android.support:cardview-v7:24.0.0'
-    compile 'com.roughike:bottom-bar:1.3.3'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.jakewharton:butterknife:7.0.1'
@@ -35,4 +33,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'me.drakeet.materialdialog:library:1.3.1'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.5.0'
+    compile 'com.daimajia.androidanimations:library:1.0.3@aar'
+    compile project(':library')
+    compile project(':bottom-bar')
+    compile project(path: ':slider')
 }

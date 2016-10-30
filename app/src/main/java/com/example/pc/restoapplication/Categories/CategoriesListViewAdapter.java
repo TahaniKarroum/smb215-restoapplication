@@ -63,7 +63,7 @@ public class CategoriesListViewAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        convertView.setBackgroundResource(R.color.white);
+       // convertView.setBackgroundResource(R.color.white);
 
         final Category categoryInfo = mCategories.get(position);
         holder.tvFName.setText(categoryInfo.getName() + " " );

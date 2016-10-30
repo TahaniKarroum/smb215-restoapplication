@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "C:\\Users\\samerdernaika\\Desktop\\android\\Queue\\library\\build\\intermediates\\res\\merged\\release\\color-v11\\abc_background_cache_hint_selector_material_dark.xml",
+        "source": "C:\\Users\\samerdernaika\\Desktop\\android\\Queue\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.0.0\\res\\color-v11\\abc_background_cache_hint_selector_material_dark.xml"
+    },
+    {
+        "merged": "C:\\Users\\samerdernaika\\Desktop\\android\\Queue\\library\\build\\intermediates\\res\\merged\\release\\color-v11\\abc_background_cache_hint_selector_material_light.xml",
+        "source": "C:\\Users\\samerdernaika\\Desktop\\android\\Queue\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.0.0\\res\\color-v11\\abc_background_cache_hint_selector_material_light.xml"
+    },
+    {
+        "merged": "C:\\Users\\samerdernaika\\Desktop\\ads\\AndroidImageSlider-master\\library\\build\\intermediates\\res\\merged\\release\\color-v11\\abc_background_cache_hint_selector_material_light.xml",
+        "source": "C:\\Users\\samerdernaika\\Desktop\\ads\\AndroidImageSlider-master\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.0.0\\res\\color-v11\\abc_background_cache_hint_selector_material_light.xml"
+    },
+    {
+        "merged": "C:\\Users\\samerdernaika\\Desktop\\ads\\AndroidImageSlider-master\\library\\build\\intermediates\\res\\merged\\release\\color-v11\\abc_background_cache_hint_selector_material_dark.xml",
+        "source": "C:\\Users\\samerdernaika\\Desktop\\ads\\AndroidImageSlider-master\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.0.0\\res\\color-v11\\abc_background_cache_hint_selector_material_dark.xml"
+    },
+    {
+        "merged": "C:\\Users\\pc\\Desktop\\RestoApplication\\smb215-restoapplication\\slider\\build\\intermediates\\res\\merged\\release\\color-v11\\abc_background_cache_hint_selector_material_dark.xml",
+        "source": "C:\\Users\\pc\\Desktop\\RestoApplication\\smb215-restoapplication\\slider\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.0.0\\res\\color-v11\\abc_background_cache_hint_selector_material_dark.xml"
+    },
+    {
+        "merged": "C:\\Users\\pc\\Desktop\\RestoApplication\\smb215-restoapplication\\slider\\build\\intermediates\\res\\merged\\release\\color-v11\\abc_background_cache_hint_selector_material_light.xml",
+        "source": "C:\\Users\\pc\\Desktop\\RestoApplication\\smb215-restoapplication\\slider\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.0.0\\res\\color-v11\\abc_background_cache_hint_selector_material_light.xml"
+    }
+]

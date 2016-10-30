@@ -1,12 +1,14 @@
 package com.example.pc.restoapplication;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,10 +17,8 @@ import android.widget.FrameLayout;
 import com.example.pc.restoapplication.Cart.CartFragment;
 import com.example.pc.restoapplication.Categories.CategoryFragment;
 import com.example.pc.restoapplication.helper.Constant;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabClickListener;
 
 import me.tabak.fragmentswitcher.FragmentStateArrayPagerAdapter;
 import me.tabak.fragmentswitcher.FragmentSwitcher;
@@ -31,151 +31,82 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     public String android_id;
     private ProgressDialog nDialog;
+    private BottomBar mBottomBar;
+    ActionBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
         frameLayout = (FrameLayout) findViewById(R.id.container);
-        setupViewPager(viewPager);
         getDeviceid();
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setOnTabSelectedListener(
-                new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        super.onTabSelected(tab);
-                        mFragmentSwitcher.setVisibility(View.GONE);
-                        frameLayout.setVisibility(View.GONE);
-                        viewPager.setVisibility(View.VISIBLE);
-                    }
-                });
-        initializeFragmentSwitcher();
-        fillAdapters();
+        bar = getSupportActionBar();
+        bar.setTitle(R.string.app_name);
+        setContentView(R.layout.activity_main);
+        mBottomBar = BottomBar.attach(this, savedInstanceState,
+                Color.parseColor("#621284"), // Background Color
+                ContextCompat.getColor(this, R.color.white), // Tab Item Color
+                0.25f); // Tab Item Alpha
+        mBottomBar.setItems(R.menu.bottombar_menu);
+
+        mBottomBar.setOnTabClickListener(new OnTabClickListener() {
+            @Override
+            public void onTabSelected(int position) {
+                // The user selected a tab at the specified position
+                switch (position) {
+                    case 0:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, AboutFragment.newInstance()).commit();
+                        getSupportFragmentManager().executePendingTransactions();
+                        return;
+
+                    case 1:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CategoryFragment.newInstance()).commit();
+                        getSupportFragmentManager().executePendingTransactions();
+                        return;
+                    case 2:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CartFragment.newInstance()).commit();
+                        getSupportFragmentManager().executePendingTransactions();
+                        return;
+
+                    case 3:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CartFragment.newInstance()).commit();
+                        getSupportFragmentManager().executePendingTransactions();
+                        return;
+
+                }
+            }
+
+            @Override
+            public void onTabReSelected(int position) {
+                switch (position) {
+                    case 0:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, AboutFragment.newInstance()).commit();
+                        getSupportFragmentManager().executePendingTransactions();
+                        return;
+
+                    case 1:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CategoryFragment.newInstance()).commit();
+                        getSupportFragmentManager().executePendingTransactions();
+                        return;
+                    case 2:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CartFragment.newInstance()).commit();
+                        getSupportFragmentManager().executePendingTransactions();
+                        return;
+
+                    case 3:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CartFragment.newInstance()).commit();
+                        getSupportFragmentManager().executePendingTransactions();
+                        return;
+
+                }
+            }
+        });
+        mBottomBar.selectTabAtPosition(2, false);
     }
+
     public void getDeviceid() {
         android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        Constant.DEVICEID=android_id;
-       /* RequestParams params = new RequestParams();
-        params.put("deviceid", android_id);
-        String functionName="ping?deviceid="+android_id;
-        nDialog = ProgressDialog.show(this, "Loading...", "Please wait...", true);
-        CommunicationAsyn.getWithoutParams(functionName, new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                        try {
-                            Log.i("ping ", " " + response);
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject c = response.getJSONObject(i);
-                                String clientid = c.getString("ID");
-                                String name = c.getString("name");
-                                Constant.CLIENTID = clientid;
-                                Log.i("deviceid"," "+clientid);
-                                Constant.CLIENTNAME = name;
-                            }
-                            nDialog.dismiss();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            nDialog.dismiss();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable
-                            throwable, JSONObject errorResponse) {
-                        Log.i("failureeeee", " two");
-                        nDialog.dismiss();
-
-                    }
-                }
-
-        );*/
-    }
-    public void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new CategoryFragment(), "Menu");
-        adapter.addFrag(new CategoryFragment(), "Settings");
-        adapter.addFrag(new CartFragment(), "Cart");
-        viewPager.setAdapter(adapter);
-    }
-
-    protected class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(android.support.v4.app.FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Log.i("position  ", " pppp  " + position);
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFrag(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }
-
-    private void initializeFragmentSwitcher() {
-        mFragmentSwitcher = (FragmentSwitcher) findViewById(R.id.fragment_switcher);
-        mFragmentAdapter = new FragmentStateArrayPagerAdapter(getSupportFragmentManager());
-        mFragmentSwitcher.setAdapter(mFragmentAdapter);
-    }
-
-    HashMap<String, Integer> fragmentPosition;
-
-    private void fillAdapters() {
-        List<Fragment> fragments = new ArrayList<Fragment>();
-        fragmentPosition = new HashMap<String, Integer>();
-        int position = 0;
-
-        fragments.add(CategoryFragment.newInstance());
-        fragmentPosition.put(Constant.CATEGORYFRAGMENT, position++);
-
-
-        fragments.add(CartFragment.newInstance());
-        fragmentPosition.put(Constant.CARTFRAGMENT, position++);
-
-        mFragmentAdapter.addAll(fragments);
-
-    }
-
-
-    public void switchFragment(int x) {
-        mFragmentSwitcher.setCurrentItem(x);
-        viewPager.setCurrentItem(x);
-    }
-
-    public void runFragment(String key) {
-        if (fragmentPosition != null && fragmentPosition.size() == 0) {
-            mFragmentSwitcher.setVisibility(View.GONE);
-        } else {
-            if (key.equals("categoryfragment")) {
-                viewPager.setCurrentItem(1);
-                viewPager.setVisibility(View.VISIBLE);
-                frameLayout.setVisibility(View.GONE);
-
-            }
-            else
-                viewPager.setVisibility(View.GONE);
-            frameLayout.setVisibility(View.VISIBLE);
-
-        }
+        Constant.DEVICEID = android_id;
     }
 
     @Override
@@ -198,5 +129,9 @@ public class MainActivity extends AppCompatActivity {
             Log.i("MainActivity", "nothing on backstack, calling super");
             super.onBackPressed();
         }
+    }
+
+    public void setActionBarTitle(String title) {
+        bar.setTitle(title);
     }
 }

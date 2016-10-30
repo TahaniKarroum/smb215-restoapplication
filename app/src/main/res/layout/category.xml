@@ -39,7 +39,7 @@
                 android:textAppearance="?android:textAppearanceSmall"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:textColor="@color/color" />
+                android:textColor="@color/colorAccent" />
 
         </RelativeLayout>
 

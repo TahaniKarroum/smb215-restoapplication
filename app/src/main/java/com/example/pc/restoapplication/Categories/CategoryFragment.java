@@ -110,10 +110,9 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
         Constant.CATEGORYNAME = category.getName();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.addToBackStack("tag");
-        transaction.replace(R.id.container, ProductFragment.newInstance()).commit();
+        getFragmentManager().beginTransaction().replace(R.id.container, ProductFragment.newInstance()).commit();
         getFragmentManager().executePendingTransactions();
-        Log.i("dhdhhdhdchdhd", "clickkkkkkk");
-        ((MainActivity) getActivity()).runFragment(Constant.PRODUCTFRAGMENT);
+        return;
     }
     @Override
     public void onAttach(Activity activity) {
