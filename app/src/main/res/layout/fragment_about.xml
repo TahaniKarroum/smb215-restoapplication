@@ -1,26 +1,27 @@
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:custom="http://schemas.android.com/apk/res-auto"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/color"
-        android:orientation="vertical"
-        android:scrollbars="vertical">
-        <com.daimajia.slider.library.SliderLayout
-            android:id="@+id/slider"
-            android:layout_width="match_parent"
-            android:layout_height="280dp"
-            custom:auto_cycle="true"
-            custom:indicator_visibility="invisible"
-            custom:pager_animation="Accordion"
-            custom:pager_animation_span="1100" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/color"
+    android:orientation="vertical"
+    android:scrollbars="vertical">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editText"
-            android:text="About Text"
-            android:textColor="@color/white"
-            android:layout_below="@+id/slider"/>
+    <com.daimajia.slider.library.SliderLayout
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginBottom="40dp"
+        custom:auto_cycle="true"
+        custom:indicator_visibility="invisible"
+        custom:pager_animation="Accordion"
+        custom:pager_animation_span="1100" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/slider"
+        android:text="@string/abouttext"
+        android:textColor="@color/white"
+        android:textSize="16dp" />
 
-    </RelativeLayout>
+</RelativeLayout>

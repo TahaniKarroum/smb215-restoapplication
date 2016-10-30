@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 
 import com.example.pc.restoapplication.Cart.CartFragment;
 import com.example.pc.restoapplication.Categories.CategoryFragment;
+import com.example.pc.restoapplication.FeedBacks.FeedBackFragment;
 import com.example.pc.restoapplication.helper.Constant;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabClickListener;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
 
                     case 3:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CartFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, FeedBackFragment.newInstance()).commit();
                         getSupportFragmentManager().executePendingTransactions();
                         return;
 
@@ -94,14 +95,14 @@ public class MainActivity extends AppCompatActivity {
                         return;
 
                     case 3:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CartFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, FeedBackFragment.newInstance()).commit();
                         getSupportFragmentManager().executePendingTransactions();
                         return;
 
                 }
             }
         });
-        mBottomBar.selectTabAtPosition(2, false);
+        mBottomBar.selectTabAtPosition(1, false);
     }
 
     public void getDeviceid() {
