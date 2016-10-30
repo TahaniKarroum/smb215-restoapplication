@@ -41,7 +41,7 @@ public class AboutFragment extends Fragment implements BaseSliderView.OnSliderCl
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         mDemoSlider = (SliderLayout) view.findViewById(R.id.slider);
         HashMap<String, String> url_maps = new HashMap<String, String>();
-        url_maps.put("Hannibal", "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
+        url_maps.put("Hannibal", "");
         url_maps.put("Big Bang Theory", "");
         url_maps.put("House of Cards", "");
         url_maps.put("Game of Thrones", "");
