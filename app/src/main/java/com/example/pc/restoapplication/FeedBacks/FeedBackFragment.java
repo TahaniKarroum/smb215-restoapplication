@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,8 +62,6 @@ public class FeedBackFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-                final EditText et = new EditText(getContext());
                 LayoutInflater inflater = mainActivity.getLayoutInflater();
                 View alertLayout = inflater.inflate(R.layout.feedback_dialog, null);
                 final EditText text = (EditText) alertLayout.findViewById(R.id.text);
@@ -113,6 +112,7 @@ public class FeedBackFragment extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 try {
                     Log.i("Add order ", " " + response.get(0));
+                    refresh();
                     nDialog.dismiss();
                 } catch (JSONException e) {
                     nDialog.dismiss();
@@ -127,6 +127,15 @@ public class FeedBackFragment extends Fragment {
             }
         });
     }
+
+    public void refresh() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.addToBackStack("tag");
+        getFragmentManager().beginTransaction().replace(R.id.container, FeedBackFragment.newInstance()).commit();
+        getFragmentManager().executePendingTransactions();
+        return;
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

@@ -25,7 +25,6 @@
             android:layout_weight=".7"
             android:imeOptions="actionDone"
             android:singleLine="true"
-            android:inputType="number"
-            android:numeric="integer" />
+            android:inputType="text" />
     </LinearLayout>
 </LinearLayout>
