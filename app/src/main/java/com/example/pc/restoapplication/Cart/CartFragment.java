@@ -58,6 +58,7 @@ public class CartFragment extends Fragment implements OnItemClickListener<Order_
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getContext();
+        ((MainActivity) getActivity()).setActionBarTitle("Cart");
         mAdapter = new CartListViewAdapter();
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnLongClickListener(this);

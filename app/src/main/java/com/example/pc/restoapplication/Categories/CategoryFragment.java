@@ -48,6 +48,7 @@ public class CategoryFragment extends Fragment implements OnItemClickListener<Ca
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new CategoriesListViewAdapter();
+        ((MainActivity) getActivity()).setActionBarTitle("Menu");
         mAdapter.setOnItemClickListener(this);
     }
 

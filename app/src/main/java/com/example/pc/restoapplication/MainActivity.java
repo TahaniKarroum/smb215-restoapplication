@@ -5,13 +5,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.example.pc.restoapplication.Cart.CartFragment;
@@ -56,21 +53,21 @@ public class MainActivity extends AppCompatActivity {
                 // The user selected a tab at the specified position
                 switch (position) {
                     case 0:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, AboutFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, AboutFragment.newInstance()).addToBackStack( "tag" ).commit();
                         getSupportFragmentManager().executePendingTransactions();
                         return;
 
                     case 1:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CategoryFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CategoryFragment.newInstance()).addToBackStack( "tag" ).commit();
                         getSupportFragmentManager().executePendingTransactions();
                         return;
                     case 2:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CartFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CartFragment.newInstance()).addToBackStack( "tag" ).commit();
                         getSupportFragmentManager().executePendingTransactions();
                         return;
 
                     case 3:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, FeedBackFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, FeedBackFragment.newInstance()).addToBackStack( "tag" ).commit();
                         getSupportFragmentManager().executePendingTransactions();
                         return;
 
@@ -81,21 +78,21 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReSelected(int position) {
                 switch (position) {
                     case 0:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, AboutFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, AboutFragment.newInstance()).addToBackStack( "tag" ).commit();
                         getSupportFragmentManager().executePendingTransactions();
                         return;
 
                     case 1:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CategoryFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CategoryFragment.newInstance()).addToBackStack( "tag" ).commit();
                         getSupportFragmentManager().executePendingTransactions();
                         return;
                     case 2:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CartFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CartFragment.newInstance()).addToBackStack( "tag" ).commit();
                         getSupportFragmentManager().executePendingTransactions();
                         return;
 
                     case 3:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, FeedBackFragment.newInstance()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, FeedBackFragment.newInstance()).addToBackStack( "tag" ).commit();
                         getSupportFragmentManager().executePendingTransactions();
                         return;
 
@@ -112,26 +109,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-        if (fm.getBackStackEntryCount() > 0) {
-
-            int index = fm.getBackStackEntryCount();
-            Fragment fragment = fm.getFragments().get(index);
-            if (fragment instanceof CategoryFragment) {
-                viewPager.setVisibility(View.VISIBLE);
-                frameLayout.setVisibility(View.GONE);
-            } else {
-                viewPager.setVisibility(View.GONE);
-                frameLayout.setVisibility(View.VISIBLE);
-            }
-
-            fm.popBackStack();
-        } else {
-            Log.i("MainActivity", "nothing on backstack, calling super");
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
-
     public void setActionBarTitle(String title) {
         bar.setTitle(title);
     }

@@ -33,6 +33,7 @@ public class AboutFragment extends Fragment implements BaseSliderView.OnSliderCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MainActivity) getActivity()).setActionBarTitle("About");
     }
 
     @Override

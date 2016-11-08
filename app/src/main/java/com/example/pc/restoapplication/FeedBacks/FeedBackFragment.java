@@ -51,6 +51,7 @@ public class FeedBackFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MainActivity) getActivity()).setActionBarTitle("FeedBack");
         mAdapter = new FeedbacksListViewAdapter();
     }
 

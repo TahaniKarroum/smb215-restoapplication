@@ -52,6 +52,7 @@ public class ProductFragment extends Fragment implements OnItemClickListener<Pro
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getContext();
+        ((MainActivity) getActivity()).setActionBarTitle("Items");
         mAdapter = new ProductsListViewAdapter();
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnLongClickListener(this);
